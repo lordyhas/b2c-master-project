@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use League\Csv\Reader;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';
+
 
 
 
@@ -69,4 +73,54 @@ Route::get('/produits/{name}-{no}',
 ])->name("ventes");
 
 
-require __DIR__.'/auth.php';
+Route::get('/doctor/csv', function () {
+    //data_doctor
+    ///doctor-sample-data1
+    $csv = Reader::createFromPath(storage_path('app/data_doctor.csv'));
+    $csv->setHeaderOffset(0);
+    $records = $csv->getRecords();
+    $data = array();
+    foreach ($records as $record) {
+        $data[] = $record;
+    }
+    return response()->json(["data" => $data]);
+
+});
+
+function replaceEmpty(String $str) : String
+{
+    return empty($str) ? " " : $str." ";
+}
+
+Route::get('/doctor/csv/save', function () {
+    //data_doctor
+    ///doctor-sample-data1
+    $csv = Reader::createFromPath(storage_path('app/data_doctor.csv'));
+    $csv->setHeaderOffset(0);
+    $records = $csv->getRecords();
+    $data = array();
+    foreach ($records as $record) {
+        $data[] = $record;
+    }
+    $failed = 0;
+    for($i = 0; $i < 20; $i++){
+        if(!empty($data[$i]["email1"]) && !empty($data[$i]["mob_number1"])){
+            $customer = new \App\Models\Customer() ;
+            $customer->name = replaceEmpty($data[$i]["first_name"]).replaceEmpty($data[$i]["name"]).replaceEmpty($data[$i]["last_name"]);
+            $customer->email = $data[$i]["email1"];
+            $customer->phoneNumber = $data[$i]["mob_number1"];
+            //$customer->address = "";
+            $customer->locationId = 1;
+        }else{
+            $failed++;
+        }
+    }
+
+    return response()->json([
+        "failed" => $failed,
+        "data" => App\Models\Customer::all()
+    ]);
+
+});
+
+
