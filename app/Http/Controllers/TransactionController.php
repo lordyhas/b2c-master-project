@@ -5,23 +5,43 @@ namespace App\Http\Controllers;
 use App\Models\Transaction;
 use App\Http\Requests\StoreTransactionRequest;
 use App\Http\Requests\UpdateTransactionRequest;
+use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         //
+        return response()->json([
+            'status' => true,
+            'message' => "Connection work successfully!",
+            'data' => Transaction::all(),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request): \Illuminate\Http\JsonResponse
     {
         //
+
+        if(!$request->has('data') && $request->has('auth')) return response()->json([
+            "success" => false,
+            "message"=> "failed : no data received",
+        ]);
+        $data = $request->input('data');
+
+        //$this->add_doctor($data);
+
+        return response()->json([
+            "success" => true,
+            "message"=> "Doctor saved successfully",
+        ]);
+
     }
 
     /**
@@ -35,9 +55,15 @@ class TransactionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $transaction): \Illuminate\Http\JsonResponse
     {
         //
+
+        return response()->json([
+            'status' => true,
+            'message' => "Connection work successfully!",
+            'data' => [],
+        ]);
     }
 
     /**
