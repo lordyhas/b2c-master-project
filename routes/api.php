@@ -70,13 +70,13 @@ Route::get('/test_get', function () {
 });
 
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/products', 'show')->name("doctor.show");
+    Route::get('/products', 'show')->name("product.show");
     //Route::get('/products/{id}', 'showOnly')->name("doctor.show_only");
 
-    Route::post('/products', 'create')->name("doctor.create");
+    Route::post('/products', 'create')->name("product.create");
     //Route::post('/doctor_create', 'create')->name("doctor.create");
-    Route::put('/products', 'store')->name("doctor.store");
-    Route::delete('/products', 'delete')->name("doctor.delete");
+    Route::put('/products', 'store')->name("product.store");
+    Route::delete('/products', 'delete')->name("product.delete");
 });
 
 
