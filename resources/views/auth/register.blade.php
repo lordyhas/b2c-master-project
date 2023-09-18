@@ -9,12 +9,28 @@
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
+        <!-- Reg No -->
+        <div class="mt-4">
+            <x-input-label for="regno" :value="__('Register Number')" />
+            <x-text-input id="regno" class="block mt-1 w-full" type="text" name="regno" :value="old('regno','HB')" required autofocus autocomplete="regno" />
+            <x-input-error :messages="$errors->get('regno')" class="mt-2" />
+        </div>
+
         <!-- Email Address -->
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
+
+        <!-- Phone -->
+        <div class="mt-4">
+            <x-input-label for="phone" :value="__('Phone')" />
+            <!-- pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" -->
+            <x-text-input id="phone" class="block mt-1 w-full" type="tel" name="phone" :value="old('phone', '+243')" pattern="^\+243[0-9]{9}$" maxlength="13" minlength="10" required autocomplete="phone" />
+            <x-input-error :messages="$errors->get('phone')" class="mt-2" />
+        </div>
+
 
         <!-- Password -->
         <div class="mt-4">
