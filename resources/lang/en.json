@@ -1,0 +1,58 @@
+{
+    "Email": "Email",
+    "Mot de passe": "Password",
+    "Mot de passe actuel": "Current Password",
+    "Nouveau mot de passe": "New Password",
+    "Confirmé mot de passe": "Confirm Password",
+    "Mot de passe oublié?": "Forgot your password?",
+
+    "Se souvenir de moi": "Remember me",
+    "Déjà enregistré?": "Already registered??",
+    "Enregistrer":  "Register",
+    "Sauver":  "Save",
+    "Enregistré": "Saved",
+    "Se connecter":  "Log in",
+    "Se déconnecter": "Log out",
+
+    "Tableau de bord AuthX" : "Dashboard AuthX",
+
+    "Prénom": "First name",
+    "Nom": "Name",
+
+    "Tableau de bord": "Dashboard",
+    "Gestion des produits": "Products management",
+
+    "Détails du profil": "Profile Information",
+    "Mettez à jour les informations de profil et l'adresse e-mail de votre compte.": "Update your account's profile information and email address.",
+    "Votre adresse e-mail n'est pas vérifiée.":"Your email address is unverified.",
+    "Cliquez ici pour renvoyer l'e-mail de vérification.":"Click here to re-send the verification email.",
+    "Un nouveau lien de vérification a été envoyé à votre adresse e-mail.": "A new verification link has been sent to your email address.",
+    "Assurez-vous que votre compte utilise un mot de passe long et aléatoire pour rester en sécurité.":"Ensure your account is using a long, random password to stay secure.",
+    "Mettre à jour le mot de passe":"Update Password",
+
+    "Supprimer le compte":"Delete Account",
+    "Êtes-vous sûr de vouloir supprimer votre compte?":"Are you sure you want to delete your account?",
+    "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Avant de supprimer votre compte, veuillez télécharger les données ou informations que vous souhaitez conserver.":"Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.",
+    "Une fois votre compte supprimé, toutes ses ressources et données seront définitivement supprimées. Veuillez saisir votre mot de passe pour confirmer que vous souhaitez supprimer définitivement votre compte.":"Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.",
+
+    "Accueil":"Home",
+    "À propos":"About",
+    "Produit":"Product",
+    "Nos Services":"Our Services",
+
+    "Lien de réinitialisation du mot de passe":"Email Password Reset Link",
+    "Mot de passe oublié ? Pas de problème. Il suffit de renseigner votre adresse e-mail et nous vous enverrons un lien de réinitialisation de mot de passe qui vous permettra de choisir un nouveau.":"Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.",
+    "Il s’agit d’une zone sécurisée de l’application. Veuillez confirmer votre mot de passe avant de continuer.":"This is a secure area of the application. Please confirm your password before continuing.",
+
+    "Confirmer":"Confirm",
+    "Réinitialiser le mot de passe":"Reset Password",
+    "Merci de votre inscription ! Avant de commencer, pourriez-vous vérifier votre adresse e-mail en cliquant sur le lien que nous venons de vous envoyer ? Si vous n’avez pas reçu le courriel, nous serons heureux de vous en envoyer un autre.":"Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
+    "Un nouveau lien de vérification a été envoyé à l’adresse courriel que vous avez fournie pendant l’inscription.":"A new verification link has been sent to the email address you provided during registration.",
+    "Renvoyer le courriel de vérification":"Resend Verification Email",
+
+    "":"",
+
+    "_x_":"",
+    "__":"",
+    "_x": "_Null"
+}
