@@ -74,22 +74,17 @@ Route::get('/produits/{name}-{no}',
 
 
 Route::get('/doctor/csv', function () {
-    //data_doctor
-    ///doctor-sample-data1
-    $csv = Reader::createFromPath(storage_path('app/data_doctor.csv'));
-    $csv->setHeaderOffset(0);
-    $records = $csv->getRecords();
-    $data = array();
-    foreach ($records as $record) {
-        $data[] = $record;
-    }
-    return response()->json(["data" => $data]);
+
+    return response()->json([
+        "status" => "success",
+        "data" => App\Models\Customer::all()
+    ]);
 
 });
 
-function replaceEmpty(String $str) : String
+function replaceEmpty(string $str) : string
 {
-    return empty($str) ? " " : $str." ";
+    return empty($str) ? "" : $str." ";
 }
 
 Route::get('/doctor/csv/save', function () {
@@ -103,17 +98,14 @@ Route::get('/doctor/csv/save', function () {
         $data[] = $record;
     }
     $failed = 0;
-    for($i = 0; $i < 20; $i++){
-        if(!empty($data[$i]["email1"]) && !empty($data[$i]["mob_number1"])){
-            $customer = new \App\Models\Customer() ;
-            $customer->name = replaceEmpty($data[$i]["first_name"]).replaceEmpty($data[$i]["name"]).replaceEmpty($data[$i]["last_name"]);
-            $customer->email = $data[$i]["email1"];
-            $customer->phoneNumber = $data[$i]["mob_number1"];
-            //$customer->address = "";
-            $customer->locationId = 1;
-        }else{
-            $failed++;
-        }
+    for($i = 11; $i < 20; $i++){
+        $customer = new \App\Models\Customer() ;
+        $customer->name = replaceEmpty($data[$i]["first_name"]).replaceEmpty($data[$i]["name"]).replaceEmpty($data[$i]["last_name"]);
+        $customer->email = ($data[$i]["first_name"]).($data[$i]["name"]).($data[$i]["last_name"])."@hbusiness.com";
+        $customer->phoneNumber = $data[$i]["mob_number1"];
+        $customer->locationId = 1;
+        //$customer->save();
+
     }
 
     return response()->json([
@@ -123,4 +115,95 @@ Route::get('/doctor/csv/save', function () {
 
 });
 
+
+
+Route::get('/products/data', function () {
+    return response()->json([
+        "status" => "success",
+        "data" => \App\Models\Product::all()
+    ]);
+});
+
+Route::get('/products/data/save', function () {
+    //data_doctor
+    ///doctor-sample-data1
+    $csv = Reader::createFromPath(storage_path('app/sales.csv'));
+    $csv->setHeaderOffset(0);
+    $records = $csv->getRecords();
+
+    $data = array();
+    foreach ($records as $record) {
+        $data[] = $record;
+    }
+
+    $failed = 0;
+    for($i = 0; $i < count($data)-1; $i++){
+        $product = new \App\Models\Product() ;
+        $product->name = $data[$i]["product"] ;
+        $product->model = $data[$i]["model"];
+        $product->salePrice = (double) $data[$i]["price"];
+        $product->purchasePrice = (double)  $data[$i]["price"] + ((double) $data[$i]["price"] * 2);
+        //$product->promotionalPrice;
+        //$product->promotionalOutdated;
+        $product->stock = (int) $data[$i]["stock"];
+        $product->threshold = (int) $data[$i]["threshold"];
+        //$product->address;
+        $product->productType = $data[$i]["type"] ;
+        //$product->description;
+        $product->employeeId = 1;
+        //$product->canReserve;
+        //$product->images;
+        //$product->isTendency;
+
+        //$product->save();
+        $failed ++;
+
+    }
+
+    return response()->json([
+        "added" => $failed,
+        "status" => "success",
+        "data" => $data
+    ]);
+
+});
+
+
+$data_prod = [
+    [
+        "name" => "Stylo",
+        "employeeId" => "",
+        "model" => "Stylo bic",
+        "purchasePrice" => "",
+        "salePrice" => "",
+        "stock" => "",
+        "threshold" => "",
+        "address" => "",
+        "productType" => "",
+        "description" => "",
+        "canReserve" => "",
+        "images" => "",
+        "promotionalOutdated" => "",
+        "promotionalPrice" => "",
+
+    ],
+    [
+        "name" => "",
+        "employeeId" => "",
+        "model" => "",
+        "purchasePrice" => "",
+        "salePrice" => "",
+        "stock" => "",
+        "threshold" => "",
+        "address" => "",
+        "productType" => "",
+        "description" => "",
+        "canReserve" => "",
+        "images" => "",
+        "promotionalOutdated" => "",
+        "promotionalPrice" => "",
+
+    ],
+
+];
 
