@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('phoneNumber', 15)->unique();
-            $table->string('email', 15)->unique();
+            $table->string('email', 64)->unique();
             $table->foreignId('locationId')->constrained('locations');
             $table->string('address', 100)->nullable();
         });

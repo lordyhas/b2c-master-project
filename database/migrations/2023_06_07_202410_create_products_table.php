@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('purchasePrice', 10, 2);
             $table->decimal('salePrice', 10, 2);
             $table->text('description')->nullable();
-            $table->string('productType', 20);
+            $table->string('productType', 20)->nullable();
             $table->foreignId('employeeId')->constrained('users');
             $table->decimal('promotionalPrice', 10, 2)->nullable();
             $table->date('promotionalOutdated')->nullable();
