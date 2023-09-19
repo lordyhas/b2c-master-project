@@ -24,20 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/doctor-sample/csv', function () {
-    //data_doctor
-    ///doctor-sample-data1
-    $csv = Reader::createFromPath(storage_path('app/data_doctor1.csv'));
-    $csv->setHeaderOffset(0);
-    $records = $csv->getRecords();
-    $data = array();
-    foreach ($records as $record) {
-        $data[] = $record;
-    }
-    return response()->json(["data" => $data]);
-
-});
-
 
 Route::post('/test_post', function (Request $request) {
     $data = array();
