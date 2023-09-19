@@ -15,6 +15,12 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('products/manager')" :active="request()->routeIs('products.manager')">
+                        {{ __('Gestion des produits') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                        {{ __('Administrator') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -34,6 +40,13 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        @foreach(config('app.available_locales') as $locale)
+                            <x-nav-link
+                                :href="route(\Illuminate\Support\Facades\Route::currentRouteName(), ['lang' => $locale])"
+                                :active="app()->getLocale() == $locale">
+                                {{ strtoupper($locale) }}
+                            </x-nav-link>
+                        @endforeach
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
@@ -45,7 +58,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Se déconnecter') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -91,7 +104,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Se déconnecter') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
