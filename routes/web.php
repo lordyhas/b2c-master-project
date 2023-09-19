@@ -20,6 +20,24 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/admin', function () {
+    return view('admin');
+})->name('admin');
+
+Route::prefix('/products')->name('products.')->group(function () {
+        Route::get('/manager', function () {
+            return view('product');
+        })->name('manager');
+    Route::get('/admin', function () {
+        return view('admin');
+    })->name('admin');
+});
+
+Route::get('/error/{code}', function (string $code) {
+    abort($code);
+})->name('error');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -73,12 +91,36 @@ Route::get('/produits/{name}-{no}',
 ])->name("ventes");
 
 
-Route::get('/doctor/csv', function () {
 
-    return response()->json([
-        "status" => "success",
-        "data" => App\Models\Customer::all()
-    ]);
+Route::prefix('/api')->name('api.')->group(function () {
+    Route::get('/users/{id}', function (int $id) {
+        return response()->json([
+            "status" => "success",
+            "id" => $id,
+            "data" => \App\Models\User::findOrFail($id)
+        ]);
+    });
+
+    Route::get('/users', function () {
+        return response()->json([
+            "status" => "success",
+            "data" => \App\Models\User::all()
+        ]);
+    });
+
+    Route::get('/products', function () {
+        return response()->json([
+            "status" => "success",
+            "data" => \App\Models\Product::all(),
+        ]);
+    });
+
+    Route::get('/customers', function () {
+        return response()->json([
+            "status" => "success",
+            "data" => App\Models\Customer::all()
+        ]);
+    });
 
 });
 
@@ -87,7 +129,9 @@ function replaceEmpty(string $str) : string
     return empty($str) ? "" : $str." ";
 }
 
-Route::get('/doctor/csv/save', function () {
+
+
+Route::get('/doctor/csv/save-', function () {
     //data_doctor
     ///doctor-sample-data1
     $csv = Reader::createFromPath(storage_path('app/data_doctor.csv'));
@@ -117,12 +161,7 @@ Route::get('/doctor/csv/save', function () {
 
 
 
-Route::get('/products/data', function () {
-    return response()->json([
-        "status" => "success",
-        "data" => \App\Models\Product::all()
-    ]);
-});
+
 
 Route::get('/products/data/save', function () {
     //data_doctor
@@ -137,12 +176,12 @@ Route::get('/products/data/save', function () {
     }
 
     $failed = 0;
-    for($i = 0; $i < count($data)-1; $i++){
+    for($i = 0; $i < count($data); $i++){
         $product = new \App\Models\Product() ;
         $product->name = $data[$i]["product"] ;
         $product->model = $data[$i]["model"];
         $product->salePrice = (double) $data[$i]["price"];
-        $product->purchasePrice = (double)  $data[$i]["price"] + ((double) $data[$i]["price"] * 2);
+        $product->purchasePrice = (double)  $data[$i]["price"] + ((double) $data[$i]["price"] * 0.2);
         //$product->promotionalPrice;
         //$product->promotionalOutdated;
         $product->stock = (int) $data[$i]["stock"];
@@ -155,7 +194,7 @@ Route::get('/products/data/save', function () {
         //$product->images;
         //$product->isTendency;
 
-        //$product->save();
+        $product->save();
         $failed ++;
 
     }
