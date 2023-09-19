@@ -16,6 +16,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property string $name
+ * @property string $email
  * @property string $phoneNumber
  * @property int $locationId
  * @property string|null $address

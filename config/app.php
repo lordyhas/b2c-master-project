@@ -16,7 +16,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Horizon Business'),
 
     /*
     |--------------------------------------------------------------------------
@@ -83,7 +83,29 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'fr',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available locales
+    |--------------------------------------------------------------------------
+    |
+    | List all locales that your application works with
+    |
+    */
+    'available_locales' => [
+        'English' => 'en',
+        'Français' => 'fr',
+    ],
+
+    'available_opposite_locales' => [
+        'fr' => 'English',
+        'en' => 'Français',
+    ],
+    'available_key_locales' => [
+        'en' => 'English',
+        'fr' => 'Français',
+    ],
 
     /*
     |--------------------------------------------------------------------------
