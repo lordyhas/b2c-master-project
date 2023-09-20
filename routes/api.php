@@ -56,18 +56,13 @@ Route::get('/test_get', function () {
 });
 
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/products', 'show')->name("product.show");
+    Route::get('/products', 'index')->name("product.index");
     //Route::get('/products/{id}', 'showOnly')->name("doctor.show_only");
 
     Route::post('/products', 'create')->name("product.create");
     //Route::post('/doctor_create', 'create')->name("doctor.create");
-    Route::put('/products', 'store')->name("product.store");
+    Route::put('/products', 'update')->name("product.update");
+    //Route::put('/products', 'store')->name("product.store");
     Route::delete('/products', 'delete')->name("product.delete");
 });
 
-
-/*
-
-
-
-*/

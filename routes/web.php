@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -108,12 +109,7 @@ Route::prefix('/api')->name('api.')->group(function () {
         ]);
     });
 
-    Route::get('/products', function () {
-        return response()->json([
-            "status" => "success",
-            "data" => \App\Models\Product::all(),
-        ]);
-    });
+
 
     Route::get('/customers', function () {
         return response()->json([
@@ -163,48 +159,14 @@ Route::get('/doctor/csv/save-', function () {
 
 
 
-Route::get('/products/data/save', function () {
-    //data_doctor
-    ///doctor-sample-data1
-    $csv = Reader::createFromPath(storage_path('app/sales.csv'));
-    $csv->setHeaderOffset(0);
-    $records = $csv->getRecords();
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/products', 'show')->name("product.show");
+    //Route::get('/products/{id}', 'showOnly')->name("doctor.show_only");
 
-    $data = array();
-    foreach ($records as $record) {
-        $data[] = $record;
-    }
-
-    $failed = 0;
-    for($i = 0; $i < count($data); $i++){
-        $product = new \App\Models\Product() ;
-        $product->name = $data[$i]["product"] ;
-        $product->model = $data[$i]["model"];
-        $product->salePrice = (double) $data[$i]["price"];
-        $product->purchasePrice = (double)  $data[$i]["price"] + ((double) $data[$i]["price"] * 0.2);
-        //$product->promotionalPrice;
-        //$product->promotionalOutdated;
-        $product->stock = (int) $data[$i]["stock"];
-        $product->threshold = (int) $data[$i]["threshold"];
-        //$product->address;
-        $product->productType = $data[$i]["type"] ;
-        //$product->description;
-        $product->employeeId = 1;
-        //$product->canReserve;
-        //$product->images;
-        //$product->isTendency;
-
-        $product->save();
-        $failed ++;
-
-    }
-
-    return response()->json([
-        "added" => $failed,
-        "status" => "success",
-        "data" => $data
-    ]);
-
+    Route::post('/products', 'create')->name("product.create");
+    //Route::post('/doctor_create', 'create')->name("doctor.create");
+    Route::put('/products', 'store')->name("product.store");
+    Route::delete('/products', 'delete')->name("product.delete");
 });
 
 
