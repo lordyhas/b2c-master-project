@@ -22,7 +22,6 @@ class ProductController extends Controller
             $status = Status::Success,
             $message = null,
         );
-
     }
 
     /**
