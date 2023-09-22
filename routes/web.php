@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use League\Csv\Reader;
@@ -18,7 +19,7 @@ use League\Csv\Reader;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Redirect::route('/login');
 });
 
 Route::get('/admin', function () {

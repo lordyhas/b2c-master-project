@@ -5,8 +5,8 @@ install: vendor/autoload.php .env public/storage public/build/manifest.json
 	php artisan migrate
 
 .env:
-	cp.env.example .env
-	php artisan key: generate
+	cp .env.example .env
+	php artisan key:generate
 
 public/storage:
 	php artisan storage:Link
