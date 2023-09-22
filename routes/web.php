@@ -19,7 +19,7 @@ use League\Csv\Reader;
 */
 
 Route::get('/', function () {
-    return Redirect::route('/login');
+    return Redirect::route('login');
 });
 
 Route::get('/admin', function () {
