@@ -18,9 +18,9 @@ class ProductController extends Controller
     public function index(): JsonResponse
     {
         return Rep::toJson(
-            $data = Product::all(),
-            $status = Status::Success,
-            $message = null,
+            data : Product::all(),
+            status : Status::Success,
+            message : null,
         );
     }
 
@@ -60,20 +60,16 @@ class ProductController extends Controller
                 $item ++;
             }
             return Rep::toJson(
-                $data = [],
-                $status = Status::Success,
-                $message = "Products saved",
-                $info = [
+                data : [],
+                status : Status::Success,
+                message : "Products saved",
+                info : [
                     "added item" => $item,
                 ],
             );
         }
 
-        return Rep::toJson(
-            $data = [],
-            $status = Status::Failed,
-            $message ="id not found"
-        );
+        return Rep::denied();
 
 
     }
@@ -107,11 +103,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request): JsonResponse
     {
-        return Rep::toJson(
-            $data = [],
-            $status = Status::Failed,
-            $message ="Unplemented method"
-        );
+        return Rep::unimplemented();
     }
 
     /**
@@ -119,10 +111,6 @@ class ProductController extends Controller
      */
     public function delete(Product $product): JsonResponse
     {
-        return Rep::toJson(
-            $data = [],
-            $status = Status::Failed,
-            $message ="Unplemented method"
-        );
+        return Rep::unimplemented();
     }
 }

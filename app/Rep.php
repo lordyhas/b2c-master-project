@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 class Rep
 {
     /**
-     * @param array $data
+     * @param array|Collection $data
      * @param Status|null $status
      * @param string|null $message
      * @param array|null $info
@@ -24,5 +24,16 @@ class Rep
             "info" => $info,
             "data" => $data
         ]);
+    }
+
+    static function denied() : JsonResponse {
+        return Rep::toJson(data : [], message: "Access denied");
+    }
+
+    static function failed(null|string $message = null) : JsonResponse {
+        return Rep::toJson(data : [], message: $message ?? "Request failed");
+    }
+    static function unimplemented() : JsonResponse {
+        return Rep::toJson(data : [], message: "Unplemented method");
     }
 }

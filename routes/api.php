@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
+use App\Rep;
+use App\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,8 +24,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->post('/user', function (Request $request) {
+    if(!$request->has('id')) return Rep::denied();
+    if($request->has('email')&& $request->has('password')){
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $user = \App\Models\User::whereEmail($email);
+        if(!Hash::check($password, $user->password)) return Rep::failed("email or password incorrect");
+        return Rep::toJson(
+            data: [$user],
+            status: Status::Success,
+            message: "User($user) logged successfully",
+        );
+    }
+    return Rep::failed();
+
 });
 
 
