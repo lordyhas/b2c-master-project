@@ -47,4 +47,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    function isAdmin(): bool {
+        return $this->access == 0;
+    }
+    function isSuperUser(): bool {
+        return $this->access == 0 || $this->access == 1;
+    }
+
+    function hasAccess(): bool {
+        $a = $this->access == -1;
+        return !$a;
+    }
+
+    function isBlocked(): bool {
+        return $this->is_blocked;
+    }
+
 }

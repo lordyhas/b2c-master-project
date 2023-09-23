@@ -5,6 +5,7 @@ use App\Models\Product;
 use App\Rep;
 use App\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 
@@ -24,21 +25,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::middleware('auth:sanctum')->post('/user', function (Request $request) {
+Route::post('/user', function (Request $request) {
     if(!$request->has('id')) return Rep::denied();
     if($request->has('email')&& $request->has('password')){
         $email = $request->get('email');
         $password = $request->get('password');
-        $user = \App\Models\User::whereEmail($email);
-        if(!Hash::check($password, $user->password)) return Rep::failed("email or password incorrect");
+
+        $user = DB::table('users')->where('email', '=', $email)->get();
+        //return $user[0]->password;
+        if(!Hash::check($password, $user[0]->password)) return Rep::failed("email or password incorrect");
         return Rep::toJson(
-            data: [$user],
+            data: [$user[0]],
             status: Status::Success,
-            message: "User($user) logged successfully",
+            message: "User({$user[0]->email}) logged successfully",
         );
     }
     return Rep::failed();
-
 });
 
 
@@ -55,13 +57,11 @@ Route::post('/test_post', function (Request $request) {
         ];
     }
     else $id = "null";
-
-    return response()->json([
-        'status' => true,
-        'message' => "Message received successfully!",
-        'id' => $id,
-        'data' => $data,
-    ]);
+    return Rep::toJson(
+        data: $data,
+        status: Status::Success,
+        message: "Message received successfully!",
+    );
 });
 
 Route::get('/test_get', function () {

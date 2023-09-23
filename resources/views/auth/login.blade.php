@@ -40,8 +40,25 @@
             @endif
 
             <x-primary-button class="ml-3">
-                {{ __('Log in') }}
+                {{ __('Se Connecter') }}
             </x-primary-button>
         </div>
+
+        <div class="flex items-center justify-start mt-3">
+            @if (Route::has('password.request') && true)
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                   href="{{ route('register') }}">
+                    {{ __('Je n\'ai pas de compte') }}
+                </a>
+            @endif
+        </div>
+
+        <div class="flex items-center justify-start mt-1">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                   href="{{ route('login') }}">
+                    {{ __('J\'ai besoin d\'aide') }}
+                </a>
+        </div>
+
     </form>
 </x-guest-layout>

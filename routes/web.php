@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -22,10 +24,25 @@ Route::get('/', function () {
     return Redirect::route('login');
 });
 
+Route::get('update/user/{id}/{level}', function (string $id, string $level){
+    $failed = true;
+    if($id != null && $level != null ){
+        $user = User::find($id);
+        $user->access = $level;
+        $user->save();
+
+        $failed =  false;
+    }
+    return Redirect::route('dashboard', ['user' => $id, 'updated' => !$failed]);
+})->where([
+    'id' => '[0-9]+',
+    'level' => '[0-9]+',
+])->name('update.user.level');
+
 Route::get('/admin', function () {
     return view('admin');
 })->name('admin');
-
+//Route::get('/products/manager', function () {return view('product');})->name();
 Route::prefix('/products')->name('products.')->group(function () {
         Route::get('/manager', function () {
             return view('product');
@@ -53,7 +70,17 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/products', 'show')->name("product.show");
+    //Route::get('/products/{id}', 'showOnly')->name("doctor.show_only");
 
+    Route::post('/products', 'create')->name("product.create");
+    //Route::post('/doctor_create', 'create')->name("doctor.create");
+    Route::put('/products', 'store')->name("product.store");
+    Route::delete('/products', 'delete')->name("product.delete");
+});
+
+//-----------------------------------------------------------
 
 Route::prefix('/x/blog')->name('blog.')
     ->group(function () {
@@ -94,19 +121,26 @@ Route::get('/produits/{name}-{no}',
 
 
 
-Route::prefix('/api')->name('api.')->group(function () {
+Route::prefix('/xapi')->name('api.')->group(function () {
     Route::get('/users/{id}', function (int $id) {
         return response()->json([
             "status" => "success",
             "id" => $id,
-            "data" => \App\Models\User::findOrFail($id)
+            "data" => User::findOrFail($id)
         ]);
     });
 
-    Route::get('/users', function () {
+    Route::get('/users', function (Request $request) {
+        if($request->has('id')){
+            $id = $request->get('id');
+            return response()->json([
+                "status" => "success",
+                "data" => DB::table('users')->where('id', '=', $id)->get()
+            ]);
+        }
         return response()->json([
             "status" => "success",
-            "data" => \App\Models\User::all()
+            "data" => User::all()
         ]);
     });
 
@@ -155,57 +189,3 @@ Route::get('/doctor/csv/save-', function () {
     ]);
 
 });
-
-
-
-
-
-Route::controller(ProductController::class)->group(function () {
-    Route::get('/products', 'show')->name("product.show");
-    //Route::get('/products/{id}', 'showOnly')->name("doctor.show_only");
-
-    Route::post('/products', 'create')->name("product.create");
-    //Route::post('/doctor_create', 'create')->name("doctor.create");
-    Route::put('/products', 'store')->name("product.store");
-    Route::delete('/products', 'delete')->name("product.delete");
-});
-
-
-$data_prod = [
-    [
-        "name" => "Stylo",
-        "employeeId" => "",
-        "model" => "Stylo bic",
-        "purchasePrice" => "",
-        "salePrice" => "",
-        "stock" => "",
-        "threshold" => "",
-        "address" => "",
-        "productType" => "",
-        "description" => "",
-        "canReserve" => "",
-        "images" => "",
-        "promotionalOutdated" => "",
-        "promotionalPrice" => "",
-
-    ],
-    [
-        "name" => "",
-        "employeeId" => "",
-        "model" => "",
-        "purchasePrice" => "",
-        "salePrice" => "",
-        "stock" => "",
-        "threshold" => "",
-        "address" => "",
-        "productType" => "",
-        "description" => "",
-        "canReserve" => "",
-        "images" => "",
-        "promotionalOutdated" => "",
-        "promotionalPrice" => "",
-
-    ],
-
-];
-
