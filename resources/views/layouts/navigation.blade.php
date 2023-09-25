@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-application-logo-min class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
@@ -16,12 +16,18 @@
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @if(Auth::user()->access != -1)
-                    <x-nav-link :href="route('products.manager')" :active="request()->routeIs('products.manager')">
-                        {{ __('Gestion des produits') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
-                        {{ __('Administrator') }}
-                    </x-nav-link>
+                        <x-nav-link :href="route('transaction')" :active="request()->routeIs('transaction')">
+                            {{ __('Commerces') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('products.manager')" :active="request()->routeIs('products.manager')">
+                            {{ __('Gestion des produits') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('customer')" :active="request()->routeIs('customer')">
+                            {{ __('Clients') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
+                            {{ __('Administrator') }}
+                        </x-nav-link>
                     @endif
                 </div>
             </div>
