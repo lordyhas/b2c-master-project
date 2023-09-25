@@ -43,6 +43,16 @@ Route::post('/user', function (Request $request) {
     return Rep::failed();
 });
 
+Route::controller(ProductController::class)->group(function () {
+    Route::get('/products', 'show')->name("product.show");
+    //Route::get('/products/{id}', 'showOnly')->name("doctor.show_only");
+
+    Route::post('/products', 'create')->name("product.create");
+    //Route::post('/doctor_create', 'create')->name("doctor.create");
+    Route::put('/products', 'store')->name("product.store");
+    Route::delete('/products', 'delete')->name("product.delete");
+});
+
 Route::get('/transactions', function (Request $request) {
     if(!$request->has('id')) return Rep::denied();
     return Rep::failed();

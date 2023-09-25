@@ -41,26 +41,26 @@ Route::get('update/user/{id}/{level}', function (string $id, string $level){
 
 Route::get('/admin', function () {
     return view('admin');
-})->name('admin');
+})->middleware(['auth', 'verified'])->name('admin');
 
 Route::get('/customers', function () {
     return view('customer');
-})->name('customer');
+})->middleware(['auth', 'verified'])->name('customer');
 
 Route::get('/transactions', function () {
     return view('transaction');
-})->name('transaction');
+})->middleware(['auth', 'verified'])->name('transaction');
 
 //Route::get('/products/manager', function () {return view('product');})->name();
 Route::prefix('/products')->name('products.')->group(function () {
         Route::get('/manager', function () {
             return view('product');
         })->name('manager');
-});
+})->middleware(['auth', 'verified']);
 
 Route::get('/error/{code}', function (string $code) {
     abort($code);
-})->name('error');
+})->middleware(['auth', 'verified'])->name('error');
 
 
 Route::get('/dashboard', function () {
@@ -75,16 +75,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-
-Route::controller(ProductController::class)->group(function () {
-    Route::get('/products', 'show')->name("product.show");
-    //Route::get('/products/{id}', 'showOnly')->name("doctor.show_only");
-
-    Route::post('/products', 'create')->name("product.create");
-    //Route::post('/doctor_create', 'create')->name("doctor.create");
-    Route::put('/products', 'store')->name("product.store");
-    Route::delete('/products', 'delete')->name("product.delete");
-});
 
 //-----------------------------------------------------------
 
