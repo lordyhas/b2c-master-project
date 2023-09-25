@@ -43,6 +43,38 @@ Route::post('/user', function (Request $request) {
     return Rep::failed();
 });
 
+Route::get('/transactions', function (Request $request) {
+    if(!$request->has('id')) return Rep::denied();
+    return Rep::failed();
+});
+Route::post('/transactions', function (Request $request) {
+    if(!$request->has('id')) return Rep::denied();
+
+    if($request->has('product_id') && $request->has('customer_id') && $request->has('quantity')){
+        $no_pro = $request->get('product_id');
+        $no_cli = $request->get('customer_id');
+        $quantity = $request->get('quantity');
+        $product = \App\Models\Product::find($no_pro);
+        $price = $product->salePrice * $quantity;
+        $transaction = new \App\Models\Transaction();
+        $transaction->customerId = $no_cli;
+        $transaction->productId = $no_pro;
+        $transaction->quantity = $quantity;
+        $transaction->amount =  $price;
+        $transaction->purchaseDate = date('Y-m-d H:i:s', time());
+
+        $transaction->save();
+
+        return Rep::toJson(
+            data: [$transaction],
+            status: Status::Success,
+            message: "Transctions write successfully",
+        );
+    }
+    return Rep::failed();
+
+});
+
 
 Route::post('/test_post', function (Request $request) {
     $data = array();
@@ -55,13 +87,14 @@ Route::post('/test_post', function (Request $request) {
             'email' => $email,
             'password' => $password,
         ];
+
+        return Rep::toJson(
+            data: $data,
+            status: Status::Success,
+            message: "Message received successfully!",
+        );
     }
-    else $id = "null";
-    return Rep::toJson(
-        data: $data,
-        status: Status::Success,
-        message: "Message received successfully!",
-    );
+    return Rep::denied();
 });
 
 Route::get('/test_get', function () {

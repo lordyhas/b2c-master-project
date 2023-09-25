@@ -42,14 +42,20 @@ Route::get('update/user/{id}/{level}', function (string $id, string $level){
 Route::get('/admin', function () {
     return view('admin');
 })->name('admin');
+
+Route::get('/customers', function () {
+    return view('customer');
+})->name('customer');
+
+Route::get('/transactions', function () {
+    return view('transaction');
+})->name('transaction');
+
 //Route::get('/products/manager', function () {return view('product');})->name();
 Route::prefix('/products')->name('products.')->group(function () {
         Route::get('/manager', function () {
             return view('product');
         })->name('manager');
-    Route::get('/admin', function () {
-        return view('admin');
-    })->name('admin');
 });
 
 Route::get('/error/{code}', function (string $code) {
@@ -106,18 +112,7 @@ Route::prefix('/x/blog')->name('blog.')
 
     });
 
-Route::get('/produits/{name}-{no}',
-    function (string $name, string $no, Request $request) {
-        return [
-            "id" => $request->input("id", "0"),
-            "product_name" => $name,
-            "pno" => $no,
-            "contents" => "Bonjour contents",
-        ];
-    })->where([
-    'no' => '[0-9]+',
-    'name' => '[a-z0-9\-]+',
-])->name("ventes");
+
 
 
 
@@ -144,6 +139,19 @@ Route::prefix('/xapi')->name('api.')->group(function () {
         ]);
     });
 
+    Route::get('/produits/{name}-{no}',
+        function (string $name, string $no, Request $request) {
+            return [
+                "id" => $request->input("id", "0"),
+                "product_name" => $name,
+                "pno" => $no,
+                "contents" => "Bonjour contents",
+            ];
+        })->where([
+        'no' => '[0-9]+',
+        'name' => '[a-z0-9\-]+',
+    ])->name("ventes");
+
 
 
     Route::get('/customers', function () {
@@ -152,6 +160,78 @@ Route::prefix('/xapi')->name('api.')->group(function () {
             "data" => App\Models\Customer::all()
         ]);
     });
+
+    Route::get('/transac/csv/{nopro}-{nocli}-{q}', function (int $nopro, int $nocli, int $q) {
+        //data_doctor
+        ///doctor-sample-data1
+        /*$csv = Reader::createFromPath(storage_path('app/transc.csv'));
+        $csv->setHeaderOffset(0);
+        $records = $csv->getRecords();
+        $data = array();
+        foreach ($records as $record) {
+            $data[] = $record;
+        }
+        $transactions = array();
+        */
+        $failed = 0;
+
+
+        $product = \App\Models\Product::find($nopro);
+        $transaction = new \App\Models\Transaction();
+        $transaction->customerId = $nocli;
+        $transaction->productId = $nopro;
+        $transaction->quantity = $q;
+        $transaction->amount = $q * $product->salePrice;
+        $transaction->purchaseDate = date('Y-m-d H:i:s', time());
+
+        //$transaction->save();
+
+        //$transactions[] = $transaction;
+
+
+        //DB::table('customers')->where('id', '=', $nocli)->get(),
+        return response()->json([
+            "failed" => $failed,
+            "client" => \App\Models\Customer::find($nocli),
+            "product" => $product,
+            "data" => \App\Models\Transaction::all(),
+        ]);
+
+    })->where([
+        'nopro' => '[0-9]+',
+        'nocli' => '[0-9]+',
+        'q' => '[0-9]+',
+
+    ]);
+
+    Route::get('/doctor/csv/save-', function () {
+        //data_doctor
+        ///doctor-sample-data1
+        $csv = Reader::createFromPath(storage_path('app/data_doctor.csv'));
+        $csv->setHeaderOffset(0);
+        $records = $csv->getRecords();
+        $data = array();
+        foreach ($records as $record) {
+            $data[] = $record;
+        }
+        $failed = 0;
+        for($i = 11; $i < 20; $i++){
+            $customer = new \App\Models\Customer() ;
+            $customer->name = replaceEmpty($data[$i]["first_name"]).replaceEmpty($data[$i]["name"]).replaceEmpty($data[$i]["last_name"]);
+            //$customer->email = ($data[$i]["first_name"]).($data[$i]["name"]).($data[$i]["last_name"])."@hbusiness.com";
+            $customer->phoneNumber = $data[$i]["mob_number1"];
+            $customer->locationId = 1;
+            //$customer->save();
+
+        }
+
+        return response()->json([
+            "failed" => $failed,
+            "data" => App\Models\Customer::all()
+        ]);
+
+    });
+
 
 });
 
@@ -162,30 +242,4 @@ function replaceEmpty(string $str) : string
 
 
 
-Route::get('/doctor/csv/save-', function () {
-    //data_doctor
-    ///doctor-sample-data1
-    $csv = Reader::createFromPath(storage_path('app/data_doctor.csv'));
-    $csv->setHeaderOffset(0);
-    $records = $csv->getRecords();
-    $data = array();
-    foreach ($records as $record) {
-        $data[] = $record;
-    }
-    $failed = 0;
-    for($i = 11; $i < 20; $i++){
-        $customer = new \App\Models\Customer() ;
-        $customer->name = replaceEmpty($data[$i]["first_name"]).replaceEmpty($data[$i]["name"]).replaceEmpty($data[$i]["last_name"]);
-        $customer->email = ($data[$i]["first_name"]).($data[$i]["name"]).($data[$i]["last_name"])."@hbusiness.com";
-        $customer->phoneNumber = $data[$i]["mob_number1"];
-        $customer->locationId = 1;
-        //$customer->save();
 
-    }
-
-    return response()->json([
-        "failed" => $failed,
-        "data" => App\Models\Customer::all()
-    ]);
-
-});
