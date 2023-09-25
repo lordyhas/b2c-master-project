@@ -27,7 +27,7 @@
                                 <thead class="thead-light">
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Name</th>
+                                    <th scope="col">Non du produit</th>
                                     <th scope="col">Prix d'achat</th>
                                     <th scope="col">Prix de vente</th>
                                     <th scope="col">Stock</th>
@@ -37,9 +37,9 @@
                                 </thead>
                                 <tbody>
                                 @php $products = \App\Models\Product::all(); @endphp
-                                @for($i = 0; $i < count($products) || $i < 10; $i++)
+                                @for($i = 0; $i < count($products); $i++)
                                     <tr>
-                                        <th scope="row">{{$i+1}}</th>
+                                        <th scope="row">{{$products[$i]->id}}</th>
                                         <td>{{$products[$i]->name}}</td>
                                         <td>{{$products[$i]->purchasePrice}}</td>
                                         <td>{{$products[$i]->salePrice}}</td>
