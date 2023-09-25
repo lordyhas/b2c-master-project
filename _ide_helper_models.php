@@ -65,8 +65,8 @@ namespace App\Models{
  * @property int $id
  * @property string $name
  * @property string $model
- * @property string $purchasePrice
  * @property string $salePrice
+ * @property string $purchasePrice
  * @property string|null $description
  * @property string $productType
  * @property int $employeeId
