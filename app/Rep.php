@@ -18,7 +18,7 @@ class Rep
     static function toJson(array|Collection $data, Status|null $status = null, string|null $message = null, array|null $info = null): JsonResponse
     {
         return response()->json([
-            "datetime" => new DateTime(),
+            "datetime" => date('Y-m-d H:i:s', time()),
             "status" => $status ?? Status::Failed,
             "message" => $message ?? "No message",
             "info" => $info,

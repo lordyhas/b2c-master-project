@@ -61,8 +61,8 @@ Route::post('/transactions', function (Request $request) {
     if(!$request->has('id')) return Rep::denied();
     //if(!$request->has('data')) return Rep::failed('No data found');
     //isset();
-    $data = $request;
     if($request->has('product_id') && $request->has('customer_id') && $request->has('quantity')){
+        $data = $request;
         $no_pro = $data->input('product_id');
         $no_cli = $data->input('customer_id');
         $quantity = $data->input('quantity');
@@ -74,12 +74,12 @@ Route::post('/transactions', function (Request $request) {
         $transaction->amount =  $product->salePrice * $quantity;
         $transaction->purchaseDate = date('Y-m-d H:i:s', time());
 
-        //$transaction->save();
+        $transaction->save();
 
         return Rep::toJson(
             data: [$transaction],
             status: Status::Success,
-            message: "Transctions write successfully",
+            message: "Transactions write successfully",
         );
     }
     return Rep::failed();
