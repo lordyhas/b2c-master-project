@@ -152,19 +152,8 @@ Route::prefix('/xapi')->name('api.')->group(function () {
     });
 
     Route::get('/transac/csv/{nopro}-{nocli}-{q}', function (int $nopro, int $nocli, int $q) {
-        //data_doctor
-        ///doctor-sample-data1
-        /*$csv = Reader::createFromPath(storage_path('app/transc.csv'));
-        $csv->setHeaderOffset(0);
-        $records = $csv->getRecords();
-        $data = array();
-        foreach ($records as $record) {
-            $data[] = $record;
-        }
-        $transactions = array();
-        */
-        $failed = 0;
 
+        $failed = 0;
 
         $product = \App\Models\Product::find($nopro);
         $transaction = new \App\Models\Transaction();
@@ -174,7 +163,7 @@ Route::prefix('/xapi')->name('api.')->group(function () {
         $transaction->amount = $q * $product->salePrice;
         $transaction->purchaseDate = date('Y-m-d H:i:s', time());
 
-        //$transaction->save();
+        $transaction->save();
 
         //$transactions[] = $transaction;
 

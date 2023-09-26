@@ -28,8 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/user', function (Request $request) {
     if(!$request->has('id')) return Rep::denied();
     if($request->has('email')&& $request->has('password')){
-        $email = $request->get('email');
-        $password = $request->get('password');
+        $email = $request->input('email');
+        $password = $request->input('password');
 
         $user = DB::table('users')->where('email', '=', $email)->get();
         //return $user[0]->password;
@@ -59,21 +59,22 @@ Route::get('/transactions', function (Request $request) {
 });
 Route::post('/transactions', function (Request $request) {
     if(!$request->has('id')) return Rep::denied();
-
-    if($request->has('product_id') && $request->has('customer_id') && $request->has('quantity')){
-        $no_pro = $request->get('product_id');
-        $no_cli = $request->get('customer_id');
-        $quantity = $request->get('quantity');
+    if(!$request->has('data')) return Rep::failed('No data found');
+    //isset();
+    $data = $request->input('data');
+    if(isset($data['product_id']) && isset($data['customer_id']) && isset($data['quantity'])){
+        $no_pro = $data->get('product_id');
+        $no_cli = $data->get('customer_id');
+        $quantity = $data->get('quantity');
         $product = \App\Models\Product::find($no_pro);
-        $price = $product->salePrice * $quantity;
         $transaction = new \App\Models\Transaction();
         $transaction->customerId = $no_cli;
         $transaction->productId = $no_pro;
         $transaction->quantity = $quantity;
-        $transaction->amount =  $price;
+        $transaction->amount =  $product->salePrice * $quantity;
         $transaction->purchaseDate = date('Y-m-d H:i:s', time());
 
-        $transaction->save();
+        //$transaction->save();
 
         return Rep::toJson(
             data: [$transaction],
@@ -83,6 +84,13 @@ Route::post('/transactions', function (Request $request) {
     }
     return Rep::failed();
 
+});
+Route::post('/connect', function () {
+    return Rep::toJson(
+        data: [],
+        status: Status::Success,
+        message: "Message received successfully!",
+    );
 });
 
 
