@@ -59,13 +59,13 @@ Route::get('/transactions', function (Request $request) {
 });
 Route::post('/transactions', function (Request $request) {
     if(!$request->has('id')) return Rep::denied();
-    if(!$request->has('data')) return Rep::failed('No data found');
+    //if(!$request->has('data')) return Rep::failed('No data found');
     //isset();
-    $data = $request->input('data');
-    if(isset($data['product_id']) && isset($data['customer_id']) && isset($data['quantity'])){
-        $no_pro = $data->get('product_id');
-        $no_cli = $data->get('customer_id');
-        $quantity = $data->get('quantity');
+    $data = $request;
+    if($request->has('product_id') && $request->has('customer_id') && $request->has('quantity')){
+        $no_pro = $data->input('product_id');
+        $no_cli = $data->input('customer_id');
+        $quantity = $data->input('quantity');
         $product = \App\Models\Product::find($no_pro);
         $transaction = new \App\Models\Transaction();
         $transaction->customerId = $no_cli;
