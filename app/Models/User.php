@@ -49,7 +49,7 @@ class User extends Authenticatable
     ];
 
     function isAdmin(): bool {
-        return $this->access == 0;
+        return $this->access == 1;
     }
     function isSuperUser(): bool {
         return $this->access == 0 || $this->access == 1;

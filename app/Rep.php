@@ -36,4 +36,8 @@ class Rep
     static function unimplemented() : JsonResponse {
         return Rep::toJson(data : [], message: "Unplemented method");
     }
+    static function error404() : JsonResponse {
+        abort(404);
+        //return Rep::toJson(data : [], message: "Error 404");
+    }
 }
